@@ -1,0 +1,31 @@
+# One Postgres container with the pgvector extension preinstalled.
+# pgvector adds a `vector` column type plus similarity operators:
+#   <->  L2 distance      <#>  negative inner product      <=>  cosine distance
+# We use <=> (cosine distance) everywhere — see src/ai/rag.ts.
+#
+#   npm run docker:up      → start it
+#   npm run docker:down    → stop it (data persists in the named volume)
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: ai-learning-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_learning
+    ports:
+      # Host port 5433: the default 5432 often collides with an existing
+      # local Postgres. Inside the container it's still the usual 5432.
+      - '5433:5432'
+    volumes:
+      - ai_learning_pgdata:/var/lib/postgresql/data
+      # Runs once on first start: enables the pgvector extension.
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d ai_learning']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  ai_learning_pgdata:

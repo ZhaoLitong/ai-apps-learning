@@ -1,0 +1,54 @@
+{
+  "name": "learning-basics",
+  "description": "Grounding checks for the seeded knowledge base: retrieval quality, answer content and judge scores on the app's own reference docs.",
+  "cases": [
+    {
+      "id": "rag-pipeline",
+      "question": "What problem does RAG solve, and what are the main stages of the pipeline?",
+      "expectedDocument": "Retrieval-Augmented",
+      "mustContain": ["retrieve"],
+      "criteria": "Explains that RAG grounds the model's answers in retrieved documents (reducing hallucination and staleness), and lists the pipeline stages: chunk documents, embed chunks, retrieve by similarity, generate with the retrieved context."
+    },
+    {
+      "id": "embeddings-similarity",
+      "question": "How do embeddings make 'similar meaning' measurable?",
+      "expectedDocument": "Embeddings",
+      "mustContain": ["vector"],
+      "criteria": "Explains that an embedding model maps text to a point in high-dimensional space where semantically similar texts land close together, and that similarity is measured with cosine similarity / distance."
+    },
+    {
+      "id": "chunking-overlap",
+      "question": "Why do we chunk documents, and why do consecutive chunks overlap?",
+      "expectedDocument": "Chunking",
+      "mustContain": ["overlap"],
+      "criteria": "Explains that whole-document embeddings blur meaning so retrieval needs smaller units, and that overlap prevents answers straddling a chunk boundary from losing context."
+    },
+    {
+      "id": "tool-calling-loop",
+      "question": "When should a model call a tool instead of answering directly, and how does the tool-calling loop work?",
+      "expectedDocument": "Tool Calling",
+      "mustContain": ["schema"],
+      "criteria": "Explains that tools are for things the model can't do from its weights (fresh data, exact computation, side effects), and describes the loop: model emits a structured call, the app executes it, the result goes back to the model which continues, possibly calling more tools."
+    },
+    {
+      "id": "memory-paths",
+      "question": "How does long-term memory work in an AI app, and what are the tradeoffs between automatic extraction and explicit memory tools?",
+      "expectedDocument": "Memory",
+      "criteria": "Explains that models have no built-in persistence so memory must be re-injected into prompts, contrasts automatic extraction (catches more, can be noisy) with explicit tool-based writes (precise, user-intended), and mentions similarity-based retrieval of memories."
+    },
+    {
+      "id": "observability-spans",
+      "question": "What is the difference between a trace and a span, and which fields matter for debugging LLM apps?",
+      "expectedDocument": "Observability",
+      "mustContain": ["span"],
+      "criteria": "Explains trace = one request's full journey, span = one timed step inside it with structured input/output, and that token usage and latency per step are what you use to find cost and quality problems."
+    },
+    {
+      "id": "evals-kinds",
+      "question": "What kinds of checks does an eval suite combine, and why use an LLM as a judge?",
+      "expectedDocument": "Evals",
+      "mustContain": ["judge"],
+      "criteria": "Explains deterministic checks (exact/substring, retrieval hits) versus rubric-based LLM judging of free-form answers, and that runs are compared over time to catch regressions from prompt or pipeline changes."
+    }
+  ]
+}

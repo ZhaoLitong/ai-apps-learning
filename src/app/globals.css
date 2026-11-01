@@ -1,0 +1,15 @@
+/* Tailwind v4: everything is configured from CSS now. The single import
+   provides all utilities; @plugin pulls in the typography classes (prose)
+   used for rendering markdown chat answers. */
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+::selection {
+  background: rgb(99 102 241 / 0.4);
+}
+
+/* Slim dark scrollbars so panels don't glare */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(64 64 64) transparent;
+}
